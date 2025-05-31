@@ -1,0 +1,180 @@
+<div class=" bg-gray-100 min-h-screen">
+  <div class="flex flex-col w-auto p-1 mx-2" *ngFor="let message of chatDetail().messages">
+    <div *ngIf="message.type === 'org'"
+      class="flex flex-col bg-green-200 p-0 mt-2 rounded max-w-64 self-start rounded-2xl rounded-tl-sm shadow-lg border border-gray-200">
+      <p *ngIf="message.message_type === 'text'" class="text-sm mx-2 inline-block self-start">
+        {{ message.message_body }}
+      </p>
+      <div *ngIf="message.message_type === 'text'"
+        class="flex gap-2 text-xs mx-2 text-gray-400 justify-end align-center">
+        <p>
+          {{ message.sent_time | date : 'shortTime' }}
+        </p>
+        <ng-container [ngSwitch]="message.status">
+          <!-- Sent -->
+          <ion-icon *ngSwitchCase="'sent_to_server'" name="checkmark" style="color:gray;"></ion-icon>
+          <!-- Delivered -->
+          <ng-container *ngSwitchCase="'delivered'">
+            <ion-icon name="checkmark" style="color:gray;"></ion-icon>
+            <ion-icon name="checkmark" style="color:gray; margin-left: -6px;"></ion-icon>
+          </ng-container>
+          <!-- Read -->
+          <ng-container *ngSwitchCase="'read'">
+            <ion-icon name="checkmark" style="color:#34B7F1;"></ion-icon>
+            <ion-icon name="checkmark" style="color:#34B7F1; margin-left: -6px;"></ion-icon>
+          </ng-container>
+          <ion-icon *ngSwitchCase="'sent'">
+            <ion-icon name="checkmark" style="color:#34B7F1;"></ion-icon>
+            <ion-icon name="checkmark" style="color:#34B7F1; margin-left: -6px;"></ion-icon>
+          </ion-icon>
+          <!-- Failed -->
+          <ion-icon *ngSwitchCase="'failed'" name="close-circle" style="color:red;" class="size-4"></ion-icon>
+        </ng-container>
+      </div>
+      <a [href]="message.media_url" download>
+        <img *ngIf="message.message_type !== 'text' && message.message_type.includes('image')" [src]="message.media_url"
+          class="size-60 m-2">
+        <div *ngIf="message.message_type !== 'text' && message.message_type.includes('image')"
+          class="flex flex-col ml-2 text-black">
+          <div>{{ message.message_body }}</div>
+        </div>
+      </a>
+      <video *ngIf="message.message_type !== 'text' && message.message_type.includes('video')" [src]="message.media_url"
+        controls></video>
+      <audio *ngIf="message.message_type !== 'text' && message.message_type.includes('audio')" [src]="message.media_url"
+        controls></audio>
+      <ng-container
+        *ngIf="['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'].includes(message.message_type)">
+        <a [href]="message.media_url" download>
+          <img class="size-60 m-2" [src]="'assets/icon/msexcel.svg'" alt="">
+          <div class="flex flex-col text-black">
+            <div>{{ message.message_body }}</div>
+          </div>
+        </a>
+      </ng-container>
+      <ng-container *ngIf="['application/pdf'].includes(message.message_type)">
+        <a [href]="message.media_url" download>
+          <img class="size-60 m-2" [src]="'assets/icon/pdf.avif'" alt="">
+          <div class="flex flex-col text-black">
+            <div>{{ message.message_body }}</div>
+          </div>
+        </a>
+      </ng-container>
+      <ng-container
+        *ngIf="['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword'].includes(message.message_type)">
+        <a [href]="message.media_url" download>
+          <img class="size-60 m-2" [src]="'assets/icon/msword.png'" alt="">
+          <div class="flex flex-col text-black">
+            <div>{{ message.message_body }}</div>
+          </div>
+        </a>
+      </ng-container>
+      <ng-container *ngIf="['application/zip', 'application/x-zip-compressed'].includes(message.message_type)">
+        <a [href]="message.media_url" download>
+          <img class="size-60 m-2" [src]="'assets/icon/zip.png'" alt="">
+          <div class="flex flex-col text-black">
+            <div>{{ message.message_body }}</div>
+          </div>
+        </a>
+      </ng-container>
+      <div *ngIf="message.message_type !== 'text'"
+        class="flex gap-2 text-xs mx-2 text-gray-400 justify-end align-center">
+        <p>
+          {{ message.sent_time | date : 'shortTime' }}
+        </p>
+        <ng-container [ngSwitch]="message.status">
+          <!-- Sent -->
+          <ion-icon *ngSwitchCase="'sent_to_server'" name="checkmark" style="color:gray;"></ion-icon>
+          <!-- Delivered -->
+          <ng-container *ngSwitchCase="'delivered'">
+            <ion-icon name="checkmark" style="color:gray;"></ion-icon>
+            <ion-icon name="checkmark" style="color:gray; margin-left: -6px;"></ion-icon>
+          </ng-container>
+          <!-- Read -->
+          <ng-container *ngSwitchCase="'read'">
+            <ion-icon name="checkmark" style="color:#34B7F1;"></ion-icon>
+            <ion-icon name="checkmark" style="color:#34B7F1; margin-left: -6px;"></ion-icon>
+          </ng-container>
+          <ion-icon *ngSwitchCase="'sent'">
+            <ion-icon name="checkmark" style="color:#34B7F1;"></ion-icon>
+            <ion-icon name="checkmark" style="color:#34B7F1; margin-left: -6px;"></ion-icon>
+          </ion-icon>
+          <!-- Failed -->
+          <div *ngSwitchCase="'failed'" class="inline-block">
+            <ion-icon name="close-circle" style="color:red;" class="size-4"
+              (click)="showStatusTooltip($event, message.status_details)"></ion-icon>
+          </div>
+          <ion-popover [isOpen]="statusTooltipOpen" [event]="statusTooltipEvent" [showBackdrop]="false"
+            (didDismiss)="statusTooltipOpen = false">
+            <ng-template>
+              <div class="p-2 text-sm max-w-xs">
+                {{ statusTooltipText }}
+              </div>
+            </ng-template>
+          </ion-popover>
+        </ng-container>
+      </div>
+    </div>
+    <div *ngIf="message.type === 'customer'"
+      class="flex flex-col bg-white  p-0 mt-2 rounded max-w-64 self-end rounded-2xl rounded-tl-sm shadow-lg">
+      <p *ngIf="message.message_type === 'text'" class="text-sm inline-block mx-2 mt-1 self-start">
+        {{ message.message_body }}
+      </p>
+      <div *ngIf="message.message_type === 'text'" class="flex justify-end">
+        <p class="text-xs mx-2 text-gray-400">
+          {{ message.received_time | date : 'shortTime' }}
+        </p>
+      </div>
+      <a [href]="message.media_url" download>
+        <img *ngIf="message.message_type !== 'text' && message.message_type.includes('image')" [src]="message.media_url"
+          class="size-60 m-2">
+        <div *ngIf="message.message_type !== 'text' && message.message_type.includes('image')" class="flex flex-col">
+          <div>{{ message.message_body }}</div>
+        </div>
+      </a>
+      <video *ngIf="message.message_type !== 'text' && message.message_type.includes('video')" [src]="message.media_url"
+        controls></video>
+      <audio *ngIf="message.message_type !== 'text' && message.message_type.includes('audio')" [src]="message.media_url"
+        controls></audio>
+      <ng-container
+        *ngIf="['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'].includes(message.message_type)">
+        <a [href]="message.media_url" download>
+          <img class="size-60 m-2" [src]="'assets/icon/msexcel.svg'" alt="">
+          <div class="flex flex-col text-black">
+            <div>{{ message.message_body }}</div>
+          </div>
+        </a>
+      </ng-container>
+      <ng-container *ngIf="['application/pdf'].includes(message.message_type)">
+        <a [href]="message.media_url" download>
+          <img class="size-60 m-2" [src]="'assets/icon/pdf.avif'" alt="">
+          <div class="flex flex-col text-black">
+            <div>{{ message.message_body }}</div>
+          </div>
+        </a>
+      </ng-container>
+      <ng-container
+        *ngIf="['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword'].includes(message.message_type)">
+        <a [href]="message.media_url" download>
+          <img class="size-60 m-2" [src]="'assets/icon/msword.png'" alt="">
+          <div class="flex flex-col text-black">
+            <div>{{ message.message_body }}</div>
+          </div>
+        </a>
+      </ng-container>
+      <ng-container *ngIf="['application/zip', 'application/x-zip-compressed'].includes(message.message_type)">
+        <a [href]="message.media_url" download>
+          <img class="size-60 m-2" [src]="'assets/icon/zip.png'" alt="">
+          <div class="flex flex-col text-black">
+            <div>{{ message.message_body }}</div>
+          </div>
+        </a>
+      </ng-container>
+      <div *ngIf="message.message_type !== 'text'" class="flex justify-end">
+        <p class="text-xs mx-2 text-gray-400">
+          {{ message.received_time | date : 'shortTime' }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

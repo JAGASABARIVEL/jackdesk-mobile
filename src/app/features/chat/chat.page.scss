@@ -1,0 +1,12 @@
+ion-segment {
+  background: var(--ion-background-color, #fff); // or a solid fallback
+  z-index: 10;
+}
+
+.segment-label-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}

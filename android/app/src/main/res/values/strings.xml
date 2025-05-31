@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">jackdesk-android</string>
+    <string name="title_activity_main">jackdesk-android</string>
+    <string name="package_name">com.jackdesk</string>
+    <string name="custom_url_scheme">com.jackdesk</string>
+  <string name="service_client_id">556673880157-840ns0acfd66aq42kjjaphg9l6dbqe5h.apps.googleusercontent.com</string>
+</resources>

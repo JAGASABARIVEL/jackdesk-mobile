@@ -1,0 +1,44 @@
+<div class="flex items-center justify-between gap-2 p-2">
+  <div class="flex justify-start items-center">
+    <div class="relative w-fit">
+      <!-- Platform icon overlay -->
+      <img
+        *ngIf="chatItem.contact.platform_name"
+        [src]="platformIconSrc"
+        alt="platform"
+        class="absolute -top-1 -left-1 size-8 rounded-full border border-white z-10"
+      />
+
+      <!-- Avatar -->
+      <ion-avatar *ngIf="chatItem?.contact.image">
+        <img class="size-14 mt-3" [src]="chatItem?.contact.image" />
+      </ion-avatar>
+      <ion-avatar *ngIf="!chatItem?.contact.image">
+        <img alt="avatar" class="size-14 mt-3" src="https://ionicframework.com/docs/img/demos/avatar.svg"/>
+      </ion-avatar>
+    </div>
+
+    <!-- Name + message -->
+    <div class="flex flex-col px-2">
+      <h5 class="m-0 truncate overflow-hidden whitespace-nowrap max-w-[12rem]">
+        {{ chatItem.contact.name }}
+      </h5>
+      <div class="flex items-center gap-1">
+        <img src="assets/icon/double-check.png" style="width: 12px; height: 12px;" />
+        <p class="m-0 text-xs truncate overflow-hidden whitespace-nowrap max-w-[12rem]">
+          {{ last_message }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Time + unread badge -->
+  <div class="flex flex-col items-end">
+    <p class="text-xs m-0">{{ last_message_time | date : 'short' }}</p>
+    <ion-badge
+      *ngIf="total_unread_message_count > 0"
+      class="p-1 rounded-full w-6 bg-green-400"
+      >{{ total_unread_message_count }}</ion-badge
+    >
+  </div>
+</div>

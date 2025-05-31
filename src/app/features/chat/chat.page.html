@@ -1,0 +1,37 @@
+<ion-spinner *ngIf="!allItemsReady()" class="block mx-auto mt-4"></ion-spinner>
+<ion-header [translucent]="true">
+  <app-chat-header *ngIf="detailsLoadedIntoCache" (searchEvent)="onSearchEvent($event)"></app-chat-header>
+  <ion-segment [(ngModel)]="chatTab" (ngModelChange)="onTabChanged()">
+    <ion-segment-button value="new">
+      <div class="segment-label-wrapper">
+        New
+        <ion-badge class="p-1 rounded-full w-6 bg-red-400 " color="danger"
+          *ngIf="fetchedNewChatListItems().length > 0">{{ fetchedNewChatListItems().length }}</ion-badge>
+      </div>
+    </ion-segment-button>
+    <ion-segment-button value="active">
+      <div class="segment-label-wrapper">
+        Active
+        <ion-badge class="p-1 rounded-full w-6 bg-green-400" color="primary"
+          *ngIf="fetchedActiveChatListItems().length > 0">{{ fetchedActiveChatListItems().length }}</ion-badge>
+      </div>
+    </ion-segment-button>
+
+    <ion-segment-button value="all">
+      <div class="segment-label-wrapper">
+        All
+        <!-- You can also add a total count badge if you want -->
+      </div>
+    </ion-segment-button>
+  </ion-segment>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <ion-list lines="inset">
+    <div class="divide-y divide-gray-200" *ngIf="detailsLoadedIntoCache">
+      <div *ngFor="let chatItem of getFilteredChatItems()" [routerLink]="['/chat', chatItem.id,]"
+        [queryParams]="{ userimage: chatItem.contact.image, username: chatItem.contact.name }">
+        <app-chat-list [chatItem]="chatItem" (loaded)="onChatItemLoaded()"></app-chat-list>
+      </div>
+    </div>
+  </ion-list>
+</ion-content>

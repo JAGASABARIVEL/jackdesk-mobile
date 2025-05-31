@@ -1,0 +1,33 @@
+<ion-grid>
+
+  <!-- WhatsApp-style message preview -->
+  <ion-row>
+    <ion-col size="12" sizeMd="4">
+      <ion-card>
+        <ion-card-content>
+
+          <!-- Floating label with select -->
+          <ion-item>
+            <ion-label position="floating">Template</ion-label>
+            <ion-select
+              interface="popover"
+              placeholder="Select Template"
+              [(ngModel)]="selectedTemplate"
+              (ionChange)="onTemplateSelect($event.detail.value?.name)">
+              <ion-select-option
+                *ngFor="let template of templates"
+                [value]="template">
+                {{ template.name }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <!-- Template Preview Component -->
+          <app-template-message [selectedTemplateForPreview]="selectedTemplate"></app-template-message>
+
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+
+</ion-grid>

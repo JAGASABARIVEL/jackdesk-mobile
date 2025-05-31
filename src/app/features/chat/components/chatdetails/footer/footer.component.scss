@@ -1,0 +1,31 @@
+.chat-toolbar {
+  --min-height: 60px;
+  padding: 4px 8px;
+  align-items: center;
+}
+
+.chat-input {
+  flex-grow: 1;
+
+}
+
+.preview-area {
+  background: #f7f7f7;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #ccc;
+}
+
+.preview-img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  margin-right: 8px;
+  border-radius: 4px;
+}
+
+.caption-input {
+  flex-grow: 1;
+  margin-right: 8px;
+}

@@ -1,0 +1,66 @@
+<ion-footer class="chat-footer">
+  <!-- Preview area if file is selected -->
+  <div *ngIf="previewUrl && selectedFile" class="preview-area">
+    <img *ngIf="isImage" [src]="previewUrl" class="preview-img" />
+    <video *ngIf="isVideo" [src]="previewUrl" class="preview-img" controls></video>
+    <ng-container
+        *ngIf="['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'].includes(selectedFile.type)">
+        <img  class="size-10" [src]="'assets/icon/msexcel.svg'" alt="">
+      </ng-container>
+      <ng-container
+        *ngIf="['application/pdf'].includes(selectedFile.type)">
+        <img class="size-10" [src]="'assets/icon/pdf.avif'" alt="">
+      </ng-container>
+      <ng-container
+        *ngIf="['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword'].includes(selectedFile.type)">
+        <img class="size-10" [src]="'assets/icon/msword.png'" alt="">
+      </ng-container>
+      <ng-container
+        *ngIf="['application/zip', 'application/x-zip-compressed'].includes(selectedFile.type)">
+        <img class="size-10" [src]="'assets/icon/zip.png'" alt="">
+      </ng-container>
+    <ion-input
+      placeholder="Add a caption..."
+      [(ngModel)]="caption"
+      class="m-2"
+    ></ion-input>
+    <ion-button fill="clear" (click)="clearAttachment()">
+      <ion-icon name="close-outline"></ion-icon>
+    </ion-button>
+  </div>
+
+  <!-- Chat Input -->
+  <ion-toolbar class="chat-toolbar">
+
+    <!-- Text Input -->
+    <ion-input
+      *ngIf="selectedFile === null"
+      [(ngModel)]="message"
+      placeholder="Type a message"
+      class="ml-1"
+      autoGrow
+    ></ion-input>
+
+    <!-- Attachment -->
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="fileInput.click()">
+        <ion-icon name="attach-outline"></ion-icon>
+        
+      </ion-button>
+      <input
+        type="file"
+        class="hidden"
+        accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.zip"
+        #fileInput
+        (change)="onFileSelected($event)"
+      />
+    </ion-buttons>
+
+    <!-- Send -->
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="addNewMessage()">
+        <ion-icon name="send"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,23 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex items-center" slot="start">
+      <div class="flex">
+        <ion-back-button default-href="chat"></ion-back-button>
+      </div>
+      <div class="flex">
+        <!-- Avatar -->
+        <ion-avatar *ngIf="userAvatar">
+          <img class="size-12 mt-3" [src]="userAvatar" />
+        </ion-avatar>
+        <ion-avatar *ngIf="!userAvatar">
+          <img alt="avatar" class="size-12 mt-3" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+        </ion-avatar>
+      </div>
+      <div class="flex flex-col">
+        <p>{{userName}}</p>
+        <p class="text-xs">last seen today at 13:25</p>
+      </div>
+    </div>
+
+  </ion-toolbar>
+</ion-header>
